@@ -1,10 +1,9 @@
 import re
-from PIL import Image, ImageChops
+from PIL import Image
 import pytesseract
 from bs4 import BeautifulSoup
 import urllib3
 import cv2
-import numpy as np
 from urllib.request import urlretrieve
 from rembg import remove
 
@@ -15,6 +14,8 @@ def getImageFromWebsite(url:str, cropped: str):
   soup = BeautifulSoup(response.data, "html.parser")
   images = soup.findAll('img', alt=True)
   backImages = [d for d in images if "Back of Envelope" in d['alt']]
+  if (len(backImages) == 0): 
+    return False
   maxImage = max(backImages, key=lambda x:x['height'])
 
   currentImage = maxImage['src'].replace('stencil/480x660/products/','stencil/1800x1800/products/')
@@ -30,6 +31,7 @@ def getImageFromWebsite(url:str, cropped: str):
   bbox = image.getbbox()
   cropped_image = image.crop(bbox)
   cropped_image.save('cropped.png')
+  return True
 
 def cropImage(img):
   # (1) Convert to gray, and threshold
@@ -72,7 +74,7 @@ def searchFabrics(image: str):
   print(contained)
 
   start_string = "Fabrics"
-  end_string = "Sizes"
+  end_string = "fabric"
 
   pattern = f"{start_string}(.*?){end_string}"
   match = re.search(pattern, text, re.DOTALL)
