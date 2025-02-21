@@ -80,8 +80,3 @@ def searchFabrics(image: str):
   if match:
       extracted_text = match.group(1).strip()
       print(extracted_text)
-
-croppedStr = "cropped.png"
-url = 'https://simplicity.com/vogue-patterns/v2100'
-getImageFromWebsite(url,  croppedStr)
-searchFabrics("cropped.png")
