@@ -1,20 +1,23 @@
 from patternFinder import getImageFromWebsite, searchFabrics
+import sys
 
-
-
-## web crawler here
-
-count = 0
-patternNumber = 1020
-print("Simplicity")
-while (count < 5):
-
-  url = 'https://simplicity.com/simplicity/s' + str(patternNumber)
+def getResultsByBrand(brandUrl, firstPatternNumber, lastPatternNumber):
+  count = 0
+  patternNumber = firstPatternNumber
   
-  didGetImage = getImageFromWebsite(url,  "cropped.png")
-  if (didGetImage):
+  while (count < 5):
+    url = brandUrl + str(patternNumber)
+    didGetImage = getImageFromWebsite(url,  "cropped.png")
     print(url)
-    count +=1
-    getImageFromWebsite(url,  "cropped.png")
-    searchFabrics("cropped.png")
-  patternNumber += 1
+    if (didGetImage):
+      count +=1
+      getImageFromWebsite(url,  "cropped.png")
+      listFabrics, stringFabrics = searchFabrics("cropped.png")
+      print(listFabrics)
+      print(stringFabrics)
+    patternNumber += 1
+
+
+print("Simplicity")
+url = "https://simplicity.com/simplicity/s"
+getResultsByBrand(url,1021,9977)

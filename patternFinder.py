@@ -71,7 +71,6 @@ def searchFabrics(image: str):
   pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
   text = pytesseract.image_to_string(Image.open(image))
   contained = [fabric for fabric in listOfFabrics if fabric in text]
-  print(contained)
 
   start_string = "Fabrics"
   end_string = "fabric"
@@ -81,4 +80,5 @@ def searchFabrics(image: str):
 
   if match:
       extracted_text = match.group(1).strip()
-      print(extracted_text)
+      return contained, extracted_text
+  return contained, ""
